@@ -4,7 +4,10 @@ import BasicCPEBuilder
 import BasicRouter
 import CPEConfigurationDirector
 import FactoryRouterCreator
+import ModernRouterAdapter
 import MyBasicRouter
+import NewTPlinkRouter
+import OldNetgearRouter
 import parentalControlDecorator
 import vpnDecorator
 import withParentalControl
@@ -48,4 +51,15 @@ fun main() {
 
     //decorator with extension
     basicRouter.withVPN().withParentalControl()
+
+
+    //adpter pattern
+    val legacyRouter = OldNetgearRouter()
+    legacyRouter.connect("MyLegacyNetwork", "oldpassword")
+    legacyRouter.disconnect()
+
+    val modernRouter = NewTPlinkRouter()
+    val adapter = ModernRouterAdapter(modernRouter)
+    adapter.connect("MyModernNetwork", "newpassword")
+    adapter.disconnect()
 }
