@@ -3,7 +3,8 @@ package org.example
 import BasicCPEBuilder
 import BasicRouter
 import CPEConfigurationDirector
-import ViewCreator
+import FactoryRouterCreator
+import MyBasicRouter
 import parentalControlDecorator
 import vpnDecorator
 import withParentalControl
@@ -21,13 +22,22 @@ fun main() {
 
 
     //factory pattern
-    val view = ViewCreator(UIElementFactory.THEME.Light)
-    val btn = view.createButton()
-    println(btn)
+    val routerType = RouterFactory.TYPE.Gaming
+
+    val factory = FactoryRouterCreator(routerType)
+
+    val router = when (routerType) {
+        RouterFactory.TYPE.Basic -> factory.createBasicRouter()
+        RouterFactory.TYPE.Gaming -> factory.createGamingRouter()
+        RouterFactory.TYPE.Enterprise -> factory.createEnterpriseRouter()
+    }
+
+    // Use the created router
+    //router.configure()
 
 
     //decorator pattern
-    val basicRouter = BasicRouter()
+    val basicRouter = MyBasicRouter()
     println("Basic Router: ${basicRouter.features()}, Cost: $${basicRouter.cost()}")
 
     val routerWithVPN = vpnDecorator.decorate(basicRouter)

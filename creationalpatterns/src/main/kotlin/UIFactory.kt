@@ -1,63 +1,56 @@
-interface View
+interface Router // Represents a generic router
 
-abstract class Button : View
-abstract class Image : View
-abstract class GridView : View
+abstract class BasicRouter : Router
+abstract class GamingRouter : Router
+abstract class EnterpriseRouter : Router
 
 // Abstract Factory
-interface UIElementFactory {
-    fun createButton(): Button
-    fun createImage(): Image
-    fun createGridView(): GridView
+interface RouterFactory {
+    fun createBasicRouter(): BasicRouter
+    fun createGamingRouter(): GamingRouter
+    fun createEnterpriseRouter(): EnterpriseRouter
 
-    enum class THEME {
-        Dark, Light
+    enum class TYPE {
+        Basic, Gaming, Enterprise
     }
-
-//    companion object {
-//        // "static" method that supplies concrete factory
-//        fun createFactory(th: THEME): UIElementFactory {
-//            return when (th) {
-//                THEME.Dark -> DarkThemeUIElementFactory()
-//                THEME.Light -> LightThemeUIElementFactory()
-//            }
-//        }
-//    }
 }
+
 // class hiding concrete factories, but implementing the same interface
-class ViewCreator(th: UIElementFactory.THEME) : UIElementFactory {
+class FactoryRouterCreator(type: RouterFactory.TYPE) : RouterFactory {
 
-    // instance of `ViewCreator` can provide controls only for provided in the constructor OS
-    private val factory = when (th) {
-        UIElementFactory.THEME.Dark -> DarkThemeUIElementFactory()
-        UIElementFactory.THEME.Light -> LightThemeUIElementFactory()
+    private val factory = when (type) {
+        RouterFactory.TYPE.Basic -> BasicRouterFactory()
+        RouterFactory.TYPE.Gaming -> GamingRouterFactory()
+        RouterFactory.TYPE.Enterprise -> EnterpriseRouterFactory()
     }
 
-    // methods returning generic controls from the factory
-    // created on the constructor argument base
-    override fun createButton(): Button = factory.createButton()
-    override fun createImage(): Image = factory.createImage()
-    override fun createGridView(): GridView = factory.createGridView()
+    override fun createBasicRouter(): BasicRouter = factory.createBasicRouter()
+    override fun createGamingRouter(): GamingRouter = factory.createGamingRouter()
+    override fun createEnterpriseRouter(): EnterpriseRouter = factory.createEnterpriseRouter()
 }
 
-// Concrete Factories (e.g., for different themes or platforms)
-internal class DarkThemeUIElementFactory : UIElementFactory {
-    override fun createButton(): Button = DarkThemeButton()
-    override fun createImage(): Image = DarkThemeImage()
-    override fun createGridView(): GridView = DarkThemeGridView()
+
+// Concrete Factories
+internal class BasicRouterFactory : RouterFactory {
+    override fun createBasicRouter(): BasicRouter = BasicNetgearRouter()
+    override fun createGamingRouter(): GamingRouter = throw UnsupportedOperationException()
+    override fun createEnterpriseRouter(): EnterpriseRouter = throw UnsupportedOperationException()
 }
 
-internal class LightThemeUIElementFactory : UIElementFactory {
-    override fun createButton(): Button = LightThemeButton()
-    override fun createImage(): Image = LightThemeImage()
-    override fun createGridView(): GridView = LightThemeGridView()
+internal class GamingRouterFactory : RouterFactory {
+    override fun createBasicRouter(): BasicRouter = throw UnsupportedOperationException()
+    override fun createGamingRouter(): GamingRouter = GamingAsusRouter()
+    override fun createEnterpriseRouter(): EnterpriseRouter = throw UnsupportedOperationException()
+}
+
+internal class EnterpriseRouterFactory : RouterFactory {
+    override fun createBasicRouter(): BasicRouter = throw UnsupportedOperationException()
+    override fun createGamingRouter(): GamingRouter = throw UnsupportedOperationException()
+    override fun createEnterpriseRouter(): EnterpriseRouter = EnterpriseCiscoRouter()
 }
 
 // Concrete Products
-internal class DarkThemeButton : Button() { /* ... implementation ... */ }
-internal class DarkThemeImage : Image() { /* ... implementation ... */ }
-internal class DarkThemeGridView : GridView() { /* ... implementation ... */ }
+internal class BasicNetgearRouter : BasicRouter() { /* ... implementation ... */ }
+internal class GamingAsusRouter : GamingRouter() { /* ... implementation ... */ }
+internal class EnterpriseCiscoRouter : EnterpriseRouter() { /* ... implementation ... */ }
 
-internal class LightThemeButton : Button() { /* ... implementation ... */ }
-internal class LightThemeImage : Image() { /* ... implementation ... */ }
-internal class LightThemeGridView : GridView() { /* ... implementation ... */ }

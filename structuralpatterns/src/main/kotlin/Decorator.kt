@@ -5,7 +5,7 @@ interface Router {
 }
 
 // Concrete Component
-class BasicRouter : Router {
+class MyBasicRouter : Router {
     override fun cost(): Double = 50.0
     override fun features(): String = "Basic Wi-Fi connectivity"
 }
