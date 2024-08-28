@@ -6,18 +6,24 @@ import BasicRemote
 import CPEConfigurationDirector
 import Cellphone
 import Charger
+import DHCPManager
 import DVDPlayer
 import EUPlugToUSPlugAdapter
 import EuropeanCellphone
 import MiniUSBCharger
 import ModernRouterAdapter
 import MyBasicRouter
+import NetworkConfigurationFacade
 import NewTPlinkRouter
 import OldNetgearRouter
+import PortForwardingManager
 import TV
 import USOutlet
+import WifiManager
 import parentalControlDecorator
 import vpnDecorator
+import vpnDecorator2
+
 import withParentalControl
 import withVPN
 
@@ -46,12 +52,6 @@ fun main() {
     //decorator pattern
     val basicRouter = MyBasicRouter()
     println("Basic Router: ${basicRouter.features()}, Cost: $${basicRouter.cost()}")
-
-    val routerWithVPN = vpnDecorator.decorate(basicRouter)
-    println("Router with VPN: ${routerWithVPN.features()}, Cost: $${routerWithVPN.cost()}")
-
-    val routerWithVPNAndParentalControls = parentalControlDecorator.decorate(routerWithVPN)
-    println("Router with VPN & Parental Controls: ${routerWithVPNAndParentalControls.features()}, Cost: $${routerWithVPNAndParentalControls.cost()}")
 
     //decorator with extension
     basicRouter.withVPN().withParentalControl()
@@ -93,4 +93,15 @@ fun main() {
     val dvd = DVDPlayer()
     val advancedRemote = AdvancedRemote(dvd)
     advancedRemote.on()
+
+    //facade
+    val wifiManager = WifiManager()
+    val portForwardingManager = PortForwardingManager()
+    val dhcpManager = DHCPManager()
+
+    val networkConfigFacade = NetworkConfigurationFacade(wifiManager, portForwardingManager, dhcpManager)
+
+    networkConfigFacade.setupBasicNetwork()
+    // ... or
+    networkConfigFacade.setupGamingNetwork()
 }
