@@ -1,9 +1,7 @@
 package org.example
 
 import BasicCPEBuilder
-import BasicRouter
 import CPEConfigurationDirector
-import FactoryRouterCreator
 import ModernRouterAdapter
 import MyBasicRouter
 import NewTPlinkRouter
@@ -27,13 +25,9 @@ fun main() {
     //factory pattern
     val routerType = RouterFactory.TYPE.Gaming
 
-    val factory = FactoryRouterCreator(routerType)
+    val factory = RouterFactory.createFactory(routerType)
 
-    val router = when (routerType) {
-        RouterFactory.TYPE.Basic -> factory.createBasicRouter()
-        RouterFactory.TYPE.Gaming -> factory.createGamingRouter()
-        RouterFactory.TYPE.Enterprise -> factory.createEnterpriseRouter()
-    }
+    val router = factory.createRouter() // Client only needs to call createRouter
 
     // Use the created router
     //router.configure()

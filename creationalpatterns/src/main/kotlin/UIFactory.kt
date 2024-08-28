@@ -6,51 +6,41 @@ abstract class EnterpriseRouter : Router
 
 // Abstract Factory
 interface RouterFactory {
-    fun createBasicRouter(): BasicRouter
-    fun createGamingRouter(): GamingRouter
-    fun createEnterpriseRouter(): EnterpriseRouter
+    fun createRouter(): Router // Single method to create a router
 
     enum class TYPE {
         Basic, Gaming, Enterprise
     }
-}
 
-// class hiding concrete factories, but implementing the same interface
-class FactoryRouterCreator(type: RouterFactory.TYPE) : RouterFactory {
-
-    private val factory = when (type) {
-        RouterFactory.TYPE.Basic -> BasicRouterFactory()
-        RouterFactory.TYPE.Gaming -> GamingRouterFactory()
-        RouterFactory.TYPE.Enterprise -> EnterpriseRouterFactory()
+    companion object {
+        // "static" method that supplies concrete factory
+        fun createFactory(type: TYPE): RouterFactory {
+            return when (type) {
+                TYPE.Basic -> BasicRouterFactory()
+                TYPE.Gaming -> GamingRouterFactory()
+                TYPE.Enterprise -> EnterpriseRouterFactory()
+            }
+        }
     }
-
-    override fun createBasicRouter(): BasicRouter = factory.createBasicRouter()
-    override fun createGamingRouter(): GamingRouter = factory.createGamingRouter()
-    override fun createEnterpriseRouter(): EnterpriseRouter = factory.createEnterpriseRouter()
 }
 
 
-// Concrete Factories
+// Concrete Factories (implementing createRouter)
 internal class BasicRouterFactory : RouterFactory {
-    override fun createBasicRouter(): BasicRouter = BasicNetgearRouter()
-    override fun createGamingRouter(): GamingRouter = throw UnsupportedOperationException()
-    override fun createEnterpriseRouter(): EnterpriseRouter = throw UnsupportedOperationException()
+    override fun createRouter(): Router = BasicNetgearRouter()
 }
 
 internal class GamingRouterFactory : RouterFactory {
-    override fun createBasicRouter(): BasicRouter = throw UnsupportedOperationException()
-    override fun createGamingRouter(): GamingRouter = GamingAsusRouter()
-    override fun createEnterpriseRouter(): EnterpriseRouter = throw UnsupportedOperationException()
+    override fun createRouter(): Router = GamingAsusRouter()
 }
 
 internal class EnterpriseRouterFactory : RouterFactory {
-    override fun createBasicRouter(): BasicRouter = throw UnsupportedOperationException()
-    override fun createGamingRouter(): GamingRouter = throw UnsupportedOperationException()
-    override fun createEnterpriseRouter(): EnterpriseRouter = EnterpriseCiscoRouter()
+    override fun createRouter(): Router = EnterpriseCiscoRouter()
 }
 
-// Concrete Products
+// Concrete Products (no changes)
 internal class BasicNetgearRouter : BasicRouter() { /* ... implementation ... */ }
 internal class GamingAsusRouter : GamingRouter() { /* ... implementation ... */ }
 internal class EnterpriseCiscoRouter : EnterpriseRouter() { /* ... implementation ... */ }
+
 
