@@ -1,11 +1,21 @@
 package org.example
 
+import AdvancedRemote
 import BasicCPEBuilder
+import BasicRemote
 import CPEConfigurationDirector
+import Cellphone
+import Charger
+import DVDPlayer
+import EUPlugToUSPlugAdapter
+import EuropeanCellphone
+import MiniUSBCharger
 import ModernRouterAdapter
 import MyBasicRouter
 import NewTPlinkRouter
 import OldNetgearRouter
+import TV
+import USOutlet
 import parentalControlDecorator
 import vpnDecorator
 import withParentalControl
@@ -56,4 +66,31 @@ fun main() {
     val adapter = ModernRouterAdapter(modernRouter)
     adapter.connect("MyModernNetwork", "newpassword")
     adapter.disconnect()
+
+    //adapter 2
+    val europeanCellphone = EuropeanCellphone()
+    val usOutlet = USOutlet()
+    val miniUSBCharger = MiniUSBCharger()
+
+    val cellphone = Cellphone(miniUSBCharger)
+
+    // Direct connection (not possible)
+    // val charger = Charger(europeanCellphone) // Type mismatch
+
+    // Using the adapter
+    val ada = EUPlugToUSPlugAdapter(europeanCellphone)
+    val charger = Charger(ada)
+    charger.plugIn()
+
+    cellphone.charge()
+
+    //bridge
+    val tv = TV()
+    val basicRemote = BasicRemote(tv)
+    basicRemote.on()
+    basicRemote.setChannel(5)
+
+    val dvd = DVDPlayer()
+    val advancedRemote = AdvancedRemote(dvd)
+    advancedRemote.on()
 }
