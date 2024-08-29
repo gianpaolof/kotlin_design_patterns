@@ -30,25 +30,12 @@ import withVPN
 
 fun main() {
 
-    //builder pattern
-    val cpeBuilder = BasicCPEBuilder()
-    val director = CPEConfigurationDirector(cpeBuilder)
-    director.configureBasicCPE()
-    val cpe = cpeBuilder.build()
-    println(cpe)
+    creationalPatterns()
 
+    structuralPatterns()
+}
 
-    //factory pattern
-    val routerType = RouterFactory.TYPE.Gaming
-
-    val factory = RouterFactory.createFactory(routerType)
-
-    val router = factory.createRouter() // Client only needs to call createRouter
-
-    // Use the created router
-    //router.configure()
-
-
+private fun structuralPatterns() {
     //decorator pattern
     val basicRouter = MyBasicIRouter()
     println("Basic Router: ${basicRouter.features()}, Cost: $${basicRouter.cost()}")
@@ -110,19 +97,20 @@ fun main() {
 
     //flyweight
     data class PacketData(val sourceIP: String, val destinationIP: String, val protocol: String, val payload: ByteArray)
+
     val receivedPackets = listOf(
-            PacketData("192.168.0.10", "192.168.0.1", "TCP", byteArrayOf(1, 2, 3, 4)),
-            PacketData("192.168.0.20", "192.168.0.1", "UDP", byteArrayOf(5, 6, 7, 8)),
-            PacketData("192.168.0.10", "192.168.0.1", "TCP", byteArrayOf(9, 10, 11, 12)),
-            PacketData("10.0.0.50", "192.168.0.1", "TCP", byteArrayOf(13, 14, 15, 16)),
-            PacketData("192.168.0.30", "192.168.0.1", "UDP", byteArrayOf(17, 18, 19, 20))
+        PacketData("192.168.0.10", "192.168.0.1", "TCP", byteArrayOf(1, 2, 3, 4)),
+        PacketData("192.168.0.20", "192.168.0.1", "UDP", byteArrayOf(5, 6, 7, 8)),
+        PacketData("192.168.0.10", "192.168.0.1", "TCP", byteArrayOf(9, 10, 11, 12)),
+        PacketData("10.0.0.50", "192.168.0.1", "TCP", byteArrayOf(13, 14, 15, 16)),
+        PacketData("192.168.0.30", "192.168.0.1", "UDP", byteArrayOf(17, 18, 19, 20))
     )
 
     for (packetData in receivedPackets) {
-            val flyweight = NetworkPacketFactory.getPacket(packetData.sourceIP, packetData.destinationIP, packetData.protocol)
-            flyweight.process(packetData.payload)
+        val flyweight =
+            NetworkPacketFactory.getPacket(packetData.sourceIP, packetData.destinationIP, packetData.protocol)
+        flyweight.process(packetData.payload)
     }
-
 
 
     //proxy
@@ -130,4 +118,24 @@ fun main() {
 
     r.configureSettings() // Output: Configuring router settings...
     r.reboot() // Output: Rebooting router...
+}
+
+private fun creationalPatterns() {
+    //builder pattern
+    val cpeBuilder = BasicCPEBuilder()
+    val director = CPEConfigurationDirector(cpeBuilder)
+    director.configureBasicCPE()
+    val cpe = cpeBuilder.build()
+    println(cpe)
+
+
+    //factory pattern
+    val routerType = RouterFactory.TYPE.Gaming
+
+    val factory = RouterFactory.createFactory(routerType)
+
+    val router = factory.createRouter() // Client only needs to call createRouter
+
+    // Use the created router
+    //router.configure()
 }
