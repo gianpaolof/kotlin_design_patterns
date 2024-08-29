@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.0.0"
+    kotlin("jvm")
 }
 
 group = "org.example"
@@ -11,9 +11,6 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation(project(":creationalpatterns"))
-    implementation(project(":structuralpatterns"))
-    implementation(project(":behavpetterns"))
 }
 
 tasks.test {

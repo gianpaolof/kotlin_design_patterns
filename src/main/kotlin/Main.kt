@@ -6,6 +6,7 @@ import BasicRemote
 import CPEConfigurationDirector
 import Cellphone
 import Charger
+import CreditCardPaymentStrategy
 import DHCPManager
 import DVDPlayer
 import EUPlugToUSPlugAdapter
@@ -17,6 +18,8 @@ import MyBasicIRouter
 import NetworkConfigurationFacade
 import NewTPlinkRouter
 import OldNetgearRouter
+import PayPalPaymentStrategy
+import PaymentProcessor
 import PortForwardingManager
 import RealRouter
 import SecureRouterProxy
@@ -33,6 +36,8 @@ fun main() {
     creationalPatterns()
 
     structuralPatterns()
+
+    behavPatterns()
 }
 
 private fun structuralPatterns() {
@@ -118,6 +123,14 @@ private fun structuralPatterns() {
 
     r.configureSettings() // Output: Configuring router settings...
     r.reboot() // Output: Rebooting router...
+}
+
+private fun behavPatterns(){
+    val paymentProcessor = PaymentProcessor(CreditCardPaymentStrategy())
+    paymentProcessor.processPayment(100.0) // Output: Paying 100.0 using Credit Card
+
+    paymentProcessor.setPaymentStrategy(PayPalPaymentStrategy())
+    paymentProcessor.processPayment(50.0)  // Output: Paying 50.0 using PayPal
 }
 
 private fun creationalPatterns() {
