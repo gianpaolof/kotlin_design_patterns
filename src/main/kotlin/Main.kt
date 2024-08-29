@@ -12,6 +12,7 @@ import DVDPlayer
 import EUPlugToUSPlugAdapter
 import EuropeanCellphone
 import IRouter2
+import IRouterContext
 import MiniUSBCharger
 import ModernRouterAdapter
 import MyBasicIRouter
@@ -29,6 +30,7 @@ import WifiManager
 import vpnDecorator
 import withParentalControl
 import withVPN
+import java.time.Clock
 
 
 fun main() {
@@ -126,11 +128,23 @@ private fun structuralPatterns() {
 }
 
 private fun behavPatterns(){
+    //startegy
     val paymentProcessor = PaymentProcessor(CreditCardPaymentStrategy())
     paymentProcessor.processPayment(100.0) // Output: Paying 100.0 using Credit Card
 
     paymentProcessor.setPaymentStrategy(PayPalPaymentStrategy())
     paymentProcessor.processPayment(50.0)  // Output: Paying 50.0 using PayPal
+
+
+    //state
+    val router = IRouterContext()
+
+    router.configure() // Output: Cannot configure while disconnected.
+    router.connect()   // Output: Connecting...
+    router.configure() // Output: Configuring settings...
+    router.reboot()    // Output: Rebooting...
+    println("Main Current Thread: ${System.currentTimeMillis()} ${Thread.currentThread().name}")
+    router.connect()   // Output: Cannot connect while rebooting.
 }
 
 private fun creationalPatterns() {
