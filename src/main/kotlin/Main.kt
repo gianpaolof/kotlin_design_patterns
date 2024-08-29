@@ -12,7 +12,7 @@ import EUPlugToUSPlugAdapter
 import EuropeanCellphone
 import MiniUSBCharger
 import ModernRouterAdapter
-import MyBasicRouter
+import MyBasicIRouter
 import NetworkConfigurationFacade
 import NewTPlinkRouter
 import OldNetgearRouter
@@ -20,6 +20,7 @@ import PortForwardingManager
 import TV
 import USOutlet
 import WifiManager
+import vpnDecorator
 import withParentalControl
 import withVPN
 
@@ -46,8 +47,11 @@ fun main() {
 
 
     //decorator pattern
-    val basicRouter = MyBasicRouter()
+    val basicRouter = MyBasicIRouter()
     println("Basic Router: ${basicRouter.features()}, Cost: $${basicRouter.cost()}")
+
+    val vpnDecorator = vpnDecorator.decorate(basicRouter)
+    println(vpnDecorator.features())
 
     //decorator with extension
     basicRouter.withVPN().withParentalControl()
