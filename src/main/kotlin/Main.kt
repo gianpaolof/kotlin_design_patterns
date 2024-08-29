@@ -24,6 +24,7 @@ import PaymentProcessor
 import PortForwardingManager
 import RealRouter
 import SecureRouterProxy
+import SwitchContext
 import TV
 import USOutlet
 import WifiManager
@@ -145,6 +146,21 @@ private fun behavPatterns(){
     router.reboot()    // Output: Rebooting...
     println("Main Current Thread: ${System.currentTimeMillis()} ${Thread.currentThread().name}")
     router.connect()   // Output: Cannot connect while rebooting.
+
+    //state machine for a switch
+    val networkSwitch = SwitchContext()
+
+    networkSwitch.connect()    // Cannot connect while powered off.
+    networkSwitch.powerOn()    // Powering on...
+    networkSwitch.connect()    // Cannot connect while booting.
+    networkSwitch.disconnect() // Cannot disconnect while booting.
+    networkSwitch.powerOff()   // Cannot power off while booting.
+
+    // After boot complete (simulated delay)
+    networkSwitch.connect()    // Connecting...
+    networkSwitch.checkStatus()       // Switch is connected.
+    networkSwitch.configurePort(1, 10) // Configuring port 1 with VLAN ID 10
+    networkSwitch.powerOff()          // Powering off...
 }
 
 private fun creationalPatterns() {
