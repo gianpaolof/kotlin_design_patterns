@@ -104,4 +104,22 @@ fun main() {
     networkConfigFacade.setupBasicNetwork()
     // ... or
     networkConfigFacade.setupGamingNetwork()
+
+    //flyweight
+    data class PacketData(val sourceIP: String, val destinationIP: String, val protocol: String, val payload: ByteArray)
+    val receivedPackets = listOf(
+            PacketData("192.168.0.10", "192.168.0.1", "TCP", byteArrayOf(1, 2, 3, 4)),
+            PacketData("192.168.0.20", "192.168.0.1", "UDP", byteArrayOf(5, 6, 7, 8)),
+            PacketData("192.168.0.10", "192.168.0.1", "TCP", byteArrayOf(9, 10, 11, 12)),
+            PacketData("10.0.0.50", "192.168.0.1", "TCP", byteArrayOf(13, 14, 15, 16)),
+            PacketData("192.168.0.30", "192.168.0.1", "UDP", byteArrayOf(17, 18, 19, 20))
+    )
+
+    for (packetData in receivedPackets) {
+            val flyweight = NetworkPacketFactory.getPacket(packetData.sourceIP, packetData.destinationIP, packetData.protocol)
+            flyweight.process(packetData.payload)
+    }
+
+
+
 }
