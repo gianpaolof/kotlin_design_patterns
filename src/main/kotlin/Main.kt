@@ -10,6 +10,7 @@ import DHCPManager
 import DVDPlayer
 import EUPlugToUSPlugAdapter
 import EuropeanCellphone
+import IRouter2
 import MiniUSBCharger
 import ModernRouterAdapter
 import MyBasicIRouter
@@ -17,6 +18,8 @@ import NetworkConfigurationFacade
 import NewTPlinkRouter
 import OldNetgearRouter
 import PortForwardingManager
+import RealRouter
+import SecureRouterProxy
 import TV
 import USOutlet
 import WifiManager
@@ -122,4 +125,9 @@ fun main() {
 
 
 
+    //proxy
+    val r: IRouter2 = SecureRouterProxy(RealRouter())
+
+    r.configureSettings() // Output: Configuring router settings...
+    r.reboot() // Output: Rebooting router...
 }
