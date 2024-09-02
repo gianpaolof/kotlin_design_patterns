@@ -10,12 +10,16 @@ import CreditCardPaymentStrategy
 import DHCPManager
 import DVDPlayer
 import EUPlugToUSPlugAdapter
+import EnableWifiCommand
 import EuropeanCellphone
+import IGPRouter
+import IRouter
 import IRouter2
 import IRouterContext
 import MiniUSBCharger
 import ModernRouterAdapter
 import MyBasicIRouter
+import NetworkAdminConsole
 import NetworkConfigurationFacade
 import NewTPlinkRouter
 import OldNetgearRouter
@@ -24,6 +28,7 @@ import PaymentProcessor
 import PortForwardingManager
 import RealRouter
 import SecureRouterProxy
+import SetPasswordCommand
 import SwitchContext
 import TV
 import USOutlet
@@ -161,6 +166,16 @@ private fun behavPatterns(){
     networkSwitch.checkStatus()       // Switch is connected.
     networkSwitch.configurePort(1, 10) // Configuring port 1 with VLAN ID 10
     networkSwitch.powerOff()          // Powering off...
+
+    //command pattern
+    val r = IGPRouter()
+    val console = NetworkAdminConsole()
+
+    console.executeCommand(EnableWifiCommand(r))
+    console.executeCommand(SetPasswordCommand(r, "new_secure_password"))
+
+    console.undoLastCommand() // Output: Password reverted to old_password (undo)
+    console.undoLastCommand() // Output: Wi-Fi disabled (undo)
 }
 
 private fun creationalPatterns() {
