@@ -6,6 +6,7 @@ import BasicRemote
 import CPEConfigurationDirector
 import Cellphone
 import Charger
+import Computer
 import CreditCardPaymentStrategy
 import DHCPManager
 import DVDPlayer
@@ -24,12 +25,15 @@ import ModernRouterAdapter
 import MyBasicIRouter
 import NetworkAdminConsole
 import NetworkConfigurationFacade
+import NetworkManager
 import NewTPlinkRouter
 import OldNetgearRouter
 import PayPalPaymentStrategy
 import PaymentProcessor
 import PortForwardingManager
 import RealRouter
+import Router
+import Router666
 import SecureRouterProxy
 import SetPasswordCommand
 import SupportRequest
@@ -193,6 +197,29 @@ private fun behavPatterns(){
     level1Handler.handleRequest(request1) // Handled by Level 1
     level1Handler.handleRequest(request2) // Escalated to Level 2, then Level 3
     level1Handler.handleRequest(request3) // escalate from 1 to 3
+
+    //mediator
+    val networkManager = NetworkManager()
+    val router1 = Router666("Main Router", networkManager)
+    val computer1 = Computer("Alice's Computer", networkManager)
+    val computer2 = Computer("Bob's Computer", networkManager)
+
+    networkManager.registerDevice(router1)
+    networkManager.registerDevice(computer1)
+    networkManager.registerDevice(computer2)
+
+    computer1.establishConnection(router1)
+    computer2.establishConnection(router1)
+
+    computer1.sendMessage("Hello from Alice!")
+    computer2.sendMessage("Hi Alice, it's Bob!")
+
+    println(networkManager.checkDeviceStatus("Main Router"))
+
+    router1.goDown()
+    computer1.sendMessage("Are you there, Bob?")
+
+    router1.comeUp()
 }
 
 private fun creationalPatterns() {
