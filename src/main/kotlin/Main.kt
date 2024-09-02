@@ -16,6 +16,9 @@ import IGPRouter
 import IRouter
 import IRouter2
 import IRouterContext
+import Level1SupportHandler
+import Level2SupportHandler
+import Level3SupportHandler
 import MiniUSBCharger
 import ModernRouterAdapter
 import MyBasicIRouter
@@ -29,6 +32,7 @@ import PortForwardingManager
 import RealRouter
 import SecureRouterProxy
 import SetPasswordCommand
+import SupportRequest
 import SwitchContext
 import TV
 import USOutlet
@@ -176,6 +180,19 @@ private fun behavPatterns(){
 
     console.undoLastCommand() // Output: Password reverted to old_password (undo)
     console.undoLastCommand() // Output: Wi-Fi disabled (undo)
+
+    //chain of command
+    val level3Handler = Level3SupportHandler(null)
+    val level2Handler = Level2SupportHandler(level3Handler)
+    val level1Handler = Level1SupportHandler(level2Handler)
+
+    val request1 = SupportRequest("Printer not working", "basic")
+    val request2 = SupportRequest("Network outage", "complex")
+    val request3 = SupportRequest("Network on fire", "highest")
+
+    level1Handler.handleRequest(request1) // Handled by Level 1
+    level1Handler.handleRequest(request2) // Escalated to Level 2, then Level 3
+    level1Handler.handleRequest(request3) // escalate from 1 to 3
 }
 
 private fun creationalPatterns() {
