@@ -11,6 +11,7 @@ import CreditCardPaymentStrategy
 import DHCPManager
 import DVDPlayer
 import EUPlugToUSPlugAdapter
+import EasyBoxGPRouter
 import EnableWifiCommand
 import EuropeanCellphone
 import IGPRouter
@@ -34,6 +35,7 @@ import PortForwardingManager
 import RealRouter
 import Router
 import Router666
+import RouterStateManager
 import SecureRouterProxy
 import SetPasswordCommand
 import SupportRequest
@@ -220,6 +222,27 @@ private fun behavPatterns(){
     computer1.sendMessage("Are you there, Bob?")
 
     router1.comeUp()
+
+    //memento pattern for a router state
+    val ebr = EasyBoxGPRouter()
+    val stateManager = RouterStateManager()
+
+    ebr.enableWifi()
+    ebr.setPassword("securePassword")
+    ebr.setSetting("firewall", "enabled")
+
+    stateManager.saveMemento(ebr.createMemento())
+    println("Initial state: $ebr")
+
+    ebr.disableWifi()
+    ebr.setPassword("new_password")
+    ebr.setSetting("firewall", "disabled")
+
+    println("Modified state: $ebr")
+
+    val memento = stateManager.undo()
+    memento?.let { ebr.restoreFromMemento(it) }
+    println("Restored state: $ebr")
 }
 
 private fun creationalPatterns() {
