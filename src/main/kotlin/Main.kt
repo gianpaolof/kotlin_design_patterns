@@ -1,5 +1,6 @@
 package org.example
 
+import AdminDashboard
 import AdvancedRemote
 import BandwidthMonitor
 import BasicCPEBuilder
@@ -29,6 +30,7 @@ import MyBasicIRouter
 import NetworkAdminConsole
 import NetworkConfigurationFacade
 import NetworkManager
+import NetworkMonitor
 import NewTPlinkRouter
 import OldNetgearRouter
 import PayPalPaymentStrategy
@@ -257,6 +259,14 @@ private fun behavPatterns(){
     rg.performAction(bandwidthMonitor)
     rg.performAction(securityScanner)
     rg.performAction(firmwareUpdater)
+
+    //observer from scratch
+    val networkMonitor = NetworkMonitor()
+    val adminDashboard = AdminDashboard(networkMonitor)
+    // ... (You can add other observers here)
+
+    networkMonitor.newDeviceConnected("Router1")
+    networkMonitor.deviceDisconnected("Switch2")
 }
 
 private fun creationalPatterns() {
