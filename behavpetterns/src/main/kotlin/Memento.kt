@@ -1,3 +1,22 @@
+/*
+Core Idea
+
+    The Memento pattern allows you to capture and externalize an object's internal state so that the object can be restored to this state later.
+    It achieves this without violating encapsulation by providing a way for the object (originator) to save its state in a memento object, which can then be stored and restored by a caretaker object.
+
+When to Use
+
+    When you need to save and restore the state of an object to a previous point in time.
+    When direct access to an object's internal state would violate encapsulation.
+    When you want to implement undo/redo functionality, checkpoints, or rollback mechanisms.
+
+Key Components
+
+    Originator: The object whose state needs to be saved and restored.
+    Memento: A simple object that stores the originator's internal state. It should be immutable to prevent external modification of the saved state.
+    Caretaker: Responsible for storing and managing mementos. It can request the originator to create a memento, store it, and later restore the originator's state from a memento.
+ */
+
 // Memento (immutable)
 data class RouterStateMemento(val isWifiEnabled: Boolean, val password: String, val otherSettings: Map<String, String>)
 

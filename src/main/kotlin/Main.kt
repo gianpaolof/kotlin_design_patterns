@@ -1,6 +1,7 @@
 package org.example
 
 import AdvancedRemote
+import BandwidthMonitor
 import BasicCPEBuilder
 import BasicRemote
 import CPEConfigurationDirector
@@ -14,6 +15,7 @@ import EUPlugToUSPlugAdapter
 import EasyBoxGPRouter
 import EnableWifiCommand
 import EuropeanCellphone
+import FirmwareUpdater
 import IGPRouter
 import IRouter
 import IRouter2
@@ -37,7 +39,9 @@ import Router
 import Router666
 import RouterStateManager
 import SecureRouterProxy
+import SecurityScanner
 import SetPasswordCommand
+import SillyRouter
 import SupportRequest
 import SwitchContext
 import TV
@@ -243,6 +247,16 @@ private fun behavPatterns(){
     val memento = stateManager.undo()
     memento?.let { ebr.restoreFromMemento(it) }
     println("Restored state: $ebr")
+
+    //visitor pattern
+    val bandwidthMonitor = BandwidthMonitor()
+    val securityScanner = SecurityScanner()
+    val firmwareUpdater = FirmwareUpdater()
+
+    val rg= SillyRouter("silly")
+    rg.performAction(bandwidthMonitor)
+    rg.performAction(securityScanner)
+    rg.performAction(firmwareUpdater)
 }
 
 private fun creationalPatterns() {
