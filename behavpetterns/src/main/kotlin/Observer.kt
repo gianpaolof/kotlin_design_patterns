@@ -1,3 +1,5 @@
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 interface NetworkObserver {
     fun onEvent(event: NetworkEvent)
 }
@@ -56,3 +58,34 @@ class AdminDashboard(private val networkMonitor: NetworkSubject) : NetworkObserv
     }
 }
 
+// Network Monitor (Subject)
+class NetworkMonitor2 {
+    private val eventSubject: PublishSubject<NetworkEvent> = PublishSubject.create()
+
+    // Methods to trigger events
+    fun newDeviceConnected(deviceName: String) {
+        eventSubject.onNext(NetworkEvent.DeviceConnected(deviceName))
+    }
+
+    fun deviceDisconnected(deviceName: String) {
+        eventSubject.onNext(NetworkEvent.DeviceDisconnected(deviceName))
+    }
+
+    // ... (Other event triggers)
+
+    // Expose the event stream as an Observable
+    fun events(): Observable<NetworkEvent> = eventSubject
+}
+// Observers
+class AdminDashboard2(private val networkMonitor: NetworkMonitor2) {
+    init {
+        networkMonitor.events()
+            .subscribe {
+                when (it) {
+                    is NetworkEvent.DeviceConnected -> println("Dashboard rx: New device connected: ${it.deviceName}")
+                    is NetworkEvent.DeviceDisconnected -> println("Dashboard rx: Device disconnected: ${it.deviceName}")
+                    // ... (Handle other event types)
+                }
+            }
+    }
+}
