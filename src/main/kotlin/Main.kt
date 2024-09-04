@@ -21,6 +21,7 @@ import EasyBoxGPRouter
 import EnableWifiCommand
 import EuropeanCellphone
 import FirmwareUpdater
+import Graph
 import IGPRouter
 import IRouter
 import IRouter2
@@ -38,6 +39,7 @@ import NetworkMonitor
 import NetworkMonitor2
 
 import NewTPlinkRouter
+import Node
 import OldNetgearRouter
 import PayPalPaymentStrategy
 import PaymentProcessor
@@ -155,6 +157,20 @@ private fun structuralPatterns() {
 
     r.configureSettings() // Output: Configuring router settings...
     r.reboot() // Output: Rebooting router...
+
+    //composite
+    val rootNode = Node("A", isRoot = true) // Create the root node
+    val graph = Graph(rootNode) // Create the graph with the root node
+
+    val nodeB = Node("B")
+    val nodeC = Node("C")
+    val nodeD = Node("D")
+
+    rootNode.addConnection(nodeB)
+    rootNode.addConnection(nodeC)
+    nodeB.addConnection(nodeD)
+
+    graph.display()
 }
 
 private fun behavPatterns(){
