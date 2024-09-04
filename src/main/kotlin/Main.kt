@@ -2,6 +2,7 @@ package org.example
 
 import AdminDashboard
 import AdminDashboard2
+
 import AdvancedRemote
 import BandwidthMonitor
 import BasicCPEBuilder
@@ -10,6 +11,8 @@ import CPEConfigurationDirector
 import Cellphone
 import Charger
 import Computer
+import ConcreteObserver
+import ConcreteSubject
 import CreditCardPaymentStrategy
 import DHCPManager
 import DVDPlayer
@@ -33,6 +36,7 @@ import NetworkConfigurationFacade
 import NetworkManager
 import NetworkMonitor
 import NetworkMonitor2
+
 import NewTPlinkRouter
 import OldNetgearRouter
 import PayPalPaymentStrategy
@@ -51,6 +55,8 @@ import SwitchContext
 import TV
 import USOutlet
 import WifiManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import vpnDecorator
 import withParentalControl
 import withVPN
@@ -275,10 +281,23 @@ private fun behavPatterns(){
     val adminDashboard2 = AdminDashboard2(networkMonitor2)
     // ... (You can add other observers here)
 
-    networkMonitor2.newDeviceConnected("Router1")
-    networkMonitor2.deviceDisconnected("Switch2")
+    networkMonitor2.newDeviceConnected("Router1 rx java")
+    networkMonitor2.deviceDisconnected("Switch2 rx java")
 
 
+    //obs kotlinx
+    val subject = ConcreteSubject()
+    val observer1 = ConcreteObserver()
+    val observer2 = ConcreteObserver()
+
+    subject.registerObserver(observer1)
+    subject.registerObserver(observer2)
+
+    subject.someActionThatChangesState("New data!")
+
+    subject.removeObserver(observer2)
+
+    subject.someActionThatChangesState("Another update!")
 }
 
 private fun creationalPatterns() {

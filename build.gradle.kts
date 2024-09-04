@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":creationalpatterns"))
     implementation(project(":structuralpatterns"))
     implementation(project(":behavpetterns"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 }
 
 tasks.test {
