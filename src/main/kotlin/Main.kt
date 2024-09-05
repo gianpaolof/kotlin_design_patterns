@@ -26,6 +26,7 @@ import IGPRouter
 import IRouter
 import IRouter2
 import IRouterContext
+import IRouterContext2
 import Level1SupportHandler
 import Level2SupportHandler
 import Level3SupportHandler
@@ -206,6 +207,16 @@ private fun behavPatterns(){
     networkSwitch.checkStatus()       // Switch is connected.
     networkSwitch.configurePort(1, 10) // Configuring port 1 with VLAN ID 10
     networkSwitch.powerOff()          // Powering off...
+
+    //state version 2
+    val router2 = IRouterContext2()
+    router2.connect()   // Output: Connecting...
+    router2.connect()
+    runBlocking {// Output: Connecting...disp
+        router2.reboot()
+    }// Output: Rebooting...
+    router2.connect()
+
 
     //command pattern
     val r = IGPRouter()
